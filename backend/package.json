@@ -1,0 +1,26 @@
+{
+  "name": "blogging_website",
+  "type": "module",
+  "scripts": {
+    "reset": "dotenv -e .dev.vars -- npx prisma migrate reset",
+    "migrate": "dotenv -e .dev.vars -- npx prisma migrate dev",
+    "generate": "dotenv -e .dev.vars -- npx prisma generate",
+    "studio": "dotenv -e .dev.vars -- npx prisma studio",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "@prisma/adapter-neon": "^6.17.1",
+    "@prisma/client": "^6.17.1",
+    "hono": "^4.9.12",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.1",
+    "dotenv-cli": "^10.0.0",
+    "prisma": "^6.17.1",
+    "wrangler": "^4.4.0"
+  }
+}
