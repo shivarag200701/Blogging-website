@@ -1,19 +1,39 @@
+import { arrayBufferToHex } from "./helper";
+
 async function passwordHasher(password: string) {
   try {
-    const array = new TextEncoder().encode(password);
-    const arrayBuffer = await crypto.subtle.digest(
-      {
-        name: "SHA-256",
-      },
-      array
-    );
-    const uint8Array = new Uint8Array(arrayBuffer);
-    const decoder = new TextDecoder("utf-8");
-    const hashedPassword = decoder.decode(uint8Array);
+    // A helper function to encode strings as Uint8Array
+    const enc = new TextEncoder();
+    //Generate salt
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iterations = 600000;
 
-    return hashedPassword;
+    const keyMaterial = await crypto.subtle.importKey(
+      "raw",
+      enc.encode(password),
+      { name: "PBKDF2" },
+      false,
+      ["deriveBits"]
+    );
+
+    const derivedBits = await crypto.subtle.deriveBits(
+      {
+        name: "PBKDF2",
+        salt,
+        iterations,
+        hash: "SHA-256",
+      },
+      keyMaterial,
+      256
+    );
+
+    return {
+      hashedPassword: arrayBufferToHex(derivedBits),
+      salt: arrayBufferToHex(salt.buffer),
+    };
   } catch (err) {
-    console.error("Failed to hash password");
+    console.error("Failed to hash password", err);
+    return null;
   }
 }
 
