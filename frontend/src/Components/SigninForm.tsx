@@ -4,7 +4,6 @@ import InputBox from "./InputBox";
 import Button from "./Button";
 
 const SignupFrom = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [passoword, setPassword] = useState("");
 
@@ -16,18 +15,12 @@ const SignupFrom = () => {
           <Heading>Create an account</Heading>
         </div>
         <div className="flex gap-2 items-center justify-center font-light text-lg text-gray-500 mb-8">
-          <p>Already have an account? </p>
-          <a href="/signin" className="underline">
-            Login
+          <p>Don't have an account? </p>
+          <a href="/signup" className="underline">
+            Sign up
           </a>
         </div>
         <div className="w-full">
-          <InputBox
-            label="Username"
-            placeholder="Enter your username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
           <InputBox
             label="Email"
             placeholder="m@example.com"
@@ -40,7 +33,7 @@ const SignupFrom = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button onClick={handleClick} color="black">
-            Sign Up
+            Sign In
           </Button>
         </div>
       </div>

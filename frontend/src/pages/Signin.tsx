@@ -1,7 +1,13 @@
-import React from "react";
+import SigninForm from "../Components/SigninForm";
+import HeroLabel from "../Components/HeroLabel";
 
 const Signin = () => {
-  return <div>Signin</div>;
+  return (
+    <div className="grid grid-cols-2 h-screen">
+      <SigninForm />
+      <HeroLabel />
+    </div>
+  );
 };
 
 export default Signin;
