@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 import { PrismaClient } from "../generated/prisma";
+import { createPostSchema, updatePostSchema } from "@shiva200701/common-app";
 
 const blog = new Hono<{
   Bindings: {
@@ -43,7 +44,13 @@ blog.use("/*", async (c, next) => {
 
 blog.post("/", async (c) => {
   const prisma = c.var.prisma;
-  const { title, content } = await c.req.json();
+  const body = await c.req.json();
+  const { data, error, success } = createPostSchema.safeParse(body);
+  if (!success) {
+    return c.json({ msg: "send proper data", error }, 411);
+  }
+  const { title, content } = data;
+
   const raw = c.get("userId");
   const userId = String(raw).trim().replace(/^"|"$/g, "");
 
@@ -76,7 +83,14 @@ blog.post("/", async (c) => {
 
 blog.put("/", async (c) => {
   const prisma = c.var.prisma;
-  const { title, content, id } = await c.req.json();
+  const body = await c.req.json();
+  const { data, success, error } = updatePostSchema.safeParse(body);
+
+  if (!success) {
+    return c.json({ msg: "send proper data", error }, 411);
+  }
+  const { id, title, content } = data;
+
   const raw = c.get("userId");
   const userId = String(raw).trim().replace(/^"|"$/g, "");
 
