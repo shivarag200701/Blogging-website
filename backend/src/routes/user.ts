@@ -3,6 +3,7 @@ import passwordHasher from "../utils/passwordHasher";
 import verifyPassword from "../utils/verifyPassword";
 import signJWT from "../utils/jwt";
 import { PrismaClient } from "../generated/prisma";
+import { signinSchema, signupSchema } from "@shiva200701/common-app";
 
 const user = new Hono<{
   Bindings: {
@@ -18,10 +19,13 @@ const user = new Hono<{
 user.post("/signup", async (c) => {
   console.log("hi");
   const prisma = c.var.prisma;
-  const data = await c.req.json();
-  const { password, email, name } = data;
-  console.log(password);
+  const body = await c.req.json();
+  const { success, data, error } = signupSchema.safeParse(body);
 
+  if (!success) {
+    return c.json({ msg: "send proper data", error }, 411);
+  }
+  const { password, email, name } = data;
   try {
     const hashResult = await passwordHasher(password);
     if (!hashResult) {
@@ -83,7 +87,13 @@ user.post("/signup", async (c) => {
 
 user.post("/signin", async (c) => {
   const prisma = c.var.prisma;
-  const { email, password } = await c.req.json();
+  const body = await c.req.json();
+  const { data, error, success } = signinSchema.safeParse(body);
+
+  if (!success) {
+    return c.json({ msg: "send proper data", error }, 411);
+  }
+  const { email, password } = data;
   try {
     const user = await prisma.user.findUnique({
       where: {
