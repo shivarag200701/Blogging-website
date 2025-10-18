@@ -16,6 +16,7 @@ const blog = new Hono<{
 blog.use("/*", async (c, next) => {
   const prisma = c.var.prisma;
   const authorization = c.req.header("Authorization");
+  console.log("in authorization");
 
   if (!authorization) {
     return c.json({ msg: "No Authorization token found" });
@@ -27,6 +28,7 @@ blog.use("/*", async (c, next) => {
     c.set("userId", JSON.stringify(userId.id));
 
     await next();
+    console.log("called next");
   } catch (err) {
     console.error("error while decoding jwt", err);
 
@@ -107,6 +109,40 @@ blog.put("/", async (c) => {
     );
   }
 });
+blog.get("/bulk", async (c) => {
+  console.log(Object.fromEntries(c.req.raw.headers));
+  console.log("here");
+
+  const prisma = c.var.prisma;
+  const raw = c.get("userId");
+  const userId = String(raw).trim().replace(/^"|"$/g, "");
+  console.log(userId);
+
+  try {
+    const blogs = await prisma.post.findMany({
+      where: {
+        authorId: userId,
+      },
+    });
+    console.log(blogs);
+
+    if (!blogs) {
+      return c.json({
+        msg: "No blogs",
+      });
+    }
+
+    return c.json(blogs);
+  } catch (err) {
+    console.error("notable to get blogs", err);
+    return c.json(
+      {
+        msg: "Internal Server error",
+      },
+      500
+    );
+  }
+});
 
 blog.get("/:id", async (c) => {
   const id = c.req.param("id");
@@ -133,37 +169,6 @@ blog.get("/:id", async (c) => {
     return c.json(
       {
         msg: "Internal server error",
-      },
-      500
-    );
-  }
-});
-blog.get("/bulk", async (c) => {
-  const prisma = c.var.prisma;
-  const raw = c.get("userId");
-  const userId = String(raw).trim().replace(/^"|"$/g, "");
-  console.log(userId);
-
-  try {
-    const blogs = await prisma.post.findMany({
-      where: {
-        authorId: userId,
-      },
-    });
-    console.log(blogs);
-
-    if (!blogs) {
-      return c.json({
-        msg: "No blogs",
-      });
-    }
-
-    return c.json(blogs);
-  } catch (err) {
-    console.error("notable to get blogs", err);
-    return c.json(
-      {
-        msg: "Internal Server error",
       },
       500
     );

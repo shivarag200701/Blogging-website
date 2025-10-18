@@ -6,7 +6,7 @@ async function passwordHasher(password: string) {
     const enc = new TextEncoder();
     //Generate salt
     const salt = crypto.getRandomValues(new Uint8Array(16));
-    const iterations = 600000;
+    const iterations = 80000;
 
     const keyMaterial = await crypto.subtle.importKey(
       "raw",

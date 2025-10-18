@@ -17,7 +17,7 @@ export default async function verifyPassword(
     if (!salt) {
       throw new Error("cannot convert salt to Uint8Array");
     }
-    const iterations = 600000;
+    const iterations = 80000;
 
     const keyMaterial = await crypto.subtle.importKey(
       "raw",
