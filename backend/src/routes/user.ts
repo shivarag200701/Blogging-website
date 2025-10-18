@@ -20,6 +20,8 @@ user.post("/signup", async (c) => {
   const prisma = c.var.prisma;
   const data = await c.req.json();
   const { password, email, name } = data;
+  console.log(password);
+
   try {
     const hashResult = await passwordHasher(password);
     if (!hashResult) {
