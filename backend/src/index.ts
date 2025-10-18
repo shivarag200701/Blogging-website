@@ -21,10 +21,8 @@ app.use("*", async (c, next) => {
   const adapter = new PrismaNeon({ connectionString });
   const prisma = global.prisma || new PrismaClient({ adapter });
   c.set("prisma", prisma);
-  console.log("prisma");
 
   await next();
-  console.log("hi");
 });
 app.route("/api/v1", router);
 

@@ -108,7 +108,36 @@ blog.put("/", async (c) => {
   }
 });
 
-// blog.get("/:id", (c) => {});
+blog.get("/:id", async (c) => {
+  const id = c.req.param("id");
+  const prisma = c.var.prisma;
+  try {
+    const blog = await prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!blog) {
+      return c.json(
+        {
+          msg: "Blog not found",
+        },
+        411
+      );
+    }
+
+    return c.json(blog, 200);
+  } catch (err) {
+    console.error("Error grtting the blog", err);
+    return c.json(
+      {
+        msg: "Internal server error",
+      },
+      500
+    );
+  }
+});
 blog.get("/bulk", async (c) => {
   const prisma = c.var.prisma;
   const raw = c.get("userId");
