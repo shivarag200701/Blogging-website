@@ -42,8 +42,8 @@ blog.use("/*", async (c, next) => {
 blog.post("/", async (c) => {
   const prisma = c.var.prisma;
   const { title, content } = await c.req.json();
-  const userId = c.get("userId");
-  console.log(userId);
+  const raw = c.get("userId");
+  const userId = String(raw).trim().replace(/^"|"$/g, "");
 
   try {
     const blog = await prisma.post.create({
@@ -72,10 +72,40 @@ blog.post("/", async (c) => {
   }
 });
 
-blog.put("/", (c) => {
+blog.put("/", async (c) => {
   const prisma = c.var.prisma;
+  const { title, content, id } = await c.req.json();
+  const raw = c.get("userId");
+  const userId = String(raw).trim().replace(/^"|"$/g, "");
 
-  return c.text("from blog put");
+  try {
+    const blog = await prisma.post.update({
+      where: {
+        id,
+        authorId: userId,
+      },
+      data: {
+        title,
+        content,
+      },
+    });
+    console.log();
+
+    return c.json(
+      {
+        msg: "blog updated successfull",
+      },
+      200
+    );
+  } catch (err) {
+    console.error("error in blog updation", err);
+    return c.json(
+      {
+        msg: "Internal Server error",
+      },
+      500
+    );
+  }
 });
 
 // blog.get("/:id", (c) => {});
