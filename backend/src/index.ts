@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import router from "./routes/index";
 import { PrismaClient } from "./generated/prisma";
 import { PrismaNeon } from "@prisma/adapter-neon";
+import { cors } from "hono/cors";
 
 const app = new Hono<{
   Bindings: {
@@ -15,6 +16,8 @@ const app = new Hono<{
   };
 }>();
 config({ path: ".dev.vars" });
+
+app.use("*", cors());
 
 app.use("*", async (c, next) => {
   const connectionString = c.env.DATABASE_URL;

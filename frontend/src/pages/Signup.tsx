@@ -3,9 +3,11 @@ import SignupFrom from "../Components/SignupFrom";
 
 const Signup = () => {
   return (
-    <div className="grid grid-cols-2 h-screen">
+    <div className="grid grid-cols-1 sm:grid-cols-2 h-screen">
       <SignupFrom />
-      <HeroLabel />
+      <div className="hidden sm:block">
+        <HeroLabel />
+      </div>
     </div>
   );
 };

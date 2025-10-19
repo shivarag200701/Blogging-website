@@ -1,6 +1,6 @@
 const HeroLabel = () => {
   return (
-    <div className="flex items-center justify-center bg-slate-100">
+    <div className="flex items-center justify-center bg-slate-100 h-screen p-5">
       <div className="w-full h-[200px] flex items-center justify-center text">
         <div className="flex-col">
           <div className="text-2xl font-bold mb-4">
