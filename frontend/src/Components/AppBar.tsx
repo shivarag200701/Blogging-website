@@ -22,7 +22,7 @@ const AppBar = () => {
         </div>
         <div className="flex gap-8">
           <button
-            className="bg-[#1a8b16] rounded-3xl p-2 text-gray-300 cursor-pointer hover:shadow-xl"
+            className="bg-[#1a8b16] rounded-3xl p-2 text-gray-300 cursor-pointer hover:shadow-sm hover:text-white"
             onClick={handleClick}
           >
             Create Blog

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios, { isAxiosError } from "axios";
 import BlogCard from "../Components/BlogCard";
 import AppBar from "../Components/AppBar";
+import LoadingComponent from "../Components/LoadingComponent";
+
 interface blog {
   author: { name: string };
   authorId: string;
@@ -40,6 +42,7 @@ const Blogs = () => {
           }
         );
         setBlogs(res.data);
+        setLoading(false);
         console.log("blogs", res.data);
       } catch (err) {
         if (isAxiosError(err)) {
@@ -55,20 +58,32 @@ const Blogs = () => {
   return (
     <>
       <AppBar />
-      <div className="flex items-center justify-center p-10">
-        <div className="flex-col">
-          {blogs.map(function (blog) {
-            return (
-              <BlogCard
-                authorName={blog.author.name}
-                publishedDate={formatDate(blog.createdAt)}
-                title={blog.title}
-                content={blog.content}
-              />
-            );
-          })}
+      {!loading ? (
+        <div className="flex items-center justify-center p-10">
+          <div className="flex-col">
+            {blogs.map(function (blog) {
+              return (
+                <BlogCard
+                  authorName={blog.author.name}
+                  publishedDate={formatDate(blog.createdAt)}
+                  title={blog.title}
+                  content={blog.content}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex items-center justify-center p-10">
+          <div className="flex-col">
+            <LoadingComponent />
+            <LoadingComponent />
+            <LoadingComponent />
+            <LoadingComponent />
+            <LoadingComponent />
+          </div>
+        </div>
+      )}
     </>
   );
 };
