@@ -134,8 +134,12 @@ blog.get("/bulk", async (c) => {
 
   try {
     const blogs = await prisma.post.findMany({
-      where: {
-        authorId: userId,
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
     console.log(blogs);

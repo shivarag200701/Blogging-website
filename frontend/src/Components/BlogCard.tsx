@@ -10,7 +10,7 @@ const BlogCard = ({
   content: string;
 }) => {
   return (
-    <div className="flex items-center justify-center max-w-2xl mb-15">
+    <div className="flex   max-w-2xl mb-15">
       <div className="flex-col">
         <div className="flex gap-2 mb-2">
           <div className="flex items-center justify-center">
@@ -36,8 +36,11 @@ const BlogCard = ({
           </div>
         </div>
         <div className="text-3xl font-bold mb-2">{title}</div>
-        <div className="font-light mb-10">{content}</div>
-        <div className="h-1 bg-gray-100"></div>
+        <div className="font-light mb-10">{content.slice(0, 180)}...</div>
+        <div className="text-[#a7a7a7]">
+          {Math.ceil(content.length / 100)} min read
+        </div>
+        <div className="h-0.5 bg-gray-100"></div>
       </div>
     </div>
   );
