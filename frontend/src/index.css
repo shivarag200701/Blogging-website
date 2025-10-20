@@ -1,0 +1,20 @@
+/* In your global CSS file, e.g., `global.css` */
+.codex-editor h1,
+.codex-editor h2,
+.codex-editor h3 {
+  /* Add your custom heading styles here */
+  font-weight: bold;
+  margin: 1.5em 0;
+}
+
+.codex-editor h1 {
+  font-size: 2em; /* h1 size */
+}
+
+.codex-editor h2 {
+  font-size: 1.5em; /* h2 size */
+}
+
+.codex-editor h3 {
+  font-size: 1.25em; /* h3 size */
+}

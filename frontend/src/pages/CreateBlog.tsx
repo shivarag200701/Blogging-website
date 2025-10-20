@@ -14,17 +14,13 @@ const CreateBlog = () => {
 
       const editor = new EditorJS({
         holder: "editorjs",
+        defaultBlock: "header",
         tools: {
           header: Header,
           list: List,
         },
-        onReady: () => {
-          console.log("Editor.js is ready to work!");
-        },
-        onChange: (api, event) => {
-          console.log("Now I know that Editor's content changed!", event);
-        },
-        placeholder: "Let`s write an awesome story!",
+
+        placeholder: "Tell you story...",
       });
 
       editorInstance.current = editor;
